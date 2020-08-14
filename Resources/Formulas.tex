@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{xcolor}
+%\usepackage[margin=0.8in]{geometry}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-1.3in}
+\addtolength{\textheight}{2in}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+\newcommand{\nCr}[2]{\,_{#1}C_{#2}}
+\newcommand{\nPr}[2]{\,_{#1}P_{#2}}
+%Gummi|065|=)
+\title{\textbf{Fundamental formulas, theorems and snippets}}
+\author{Oscar Burga}
+\date{Dec 2019}
+\begin{document}
+
+\maketitle
+
+\section{Modular Arithmetic}
+	\subsection{Fermat's little theorem}
+		For any integer $a$ and prime number $p$:
+			\begin{itemize}
+				\item $ a^p \equiv a\;(\bmod\;p)\quad\Rightarrow\quad 
+						(a^p-a)$ is an integer multiple of $p$ 
+				\item $ a^{p-1} \equiv 1\;(\bmod\;p)\quad\Rightarrow\quad 
+						(a^{p-1}-1)$ is an integer multiple of $p$
+			\end{itemize}
+	\subsection {Euler's theorem: A generalization of Fermat's little theorem}
+		\begin{itemize}
+			\item Euler's totient function $(\phi(n))$:
+					Counts the number of integers $x\in[1,n]$ which are coprime to $n$.
+			\item Phi-function properties (follows from Fermat's little theorem): 
+				\begin {itemize}
+					\item $ \phi(p) = p-1 $ for prime $p$
+					\item $ \phi(p^k)= p^k - p^{k-1}$ for prime $p$
+					\item $ \phi(ab) = \phi(a)\cdot\phi(b)$ for coprime $a$ and $b$
+					\item $ \phi(ab) = \phi(a)\cdot\phi(b)\cdot\frac{d}{\phi(d)}$ 
+							for not coprime $a$ and $b$, where $d = gcd(a,b)$ 
+					\item Number of valid $x$ such that $x\in[1,n)$ and $gcd(x, n) = k$
+							can be solved as $\phi(\frac{n}{k})$
+				\end {itemize}
+			\item Application in Euler's Theorem:
+				\begin {itemize}
+					\item $x \equiv y\;(\bmod\;\phi(n))\Rightarrow a^x\equiv a^y\;(\bmod\;n)$
+						for coprime $a$ and $n$
+					\item $x^{\phi(m)} \equiv 1\;(\bmod\;m)$ for coprime $x$ and $m$
+					\item $ x^n \equiv x^{n\bmod \phi(m)}\;(\bmod\;m) $ for coprime $x$ and $m$
+					\item $x^n \equiv x^{\phi(m) + [n\bmod\phi(m)]} (\bmod\;m)$
+							for arbitrary $x$, $m$ and $n\geq\log_{2}m$
+				\end {itemize}
+		\end{itemize}
+\section{Combinatorics}
+\begin{itemize}
+	\item Permutation:
+	$$\nPr{n}{r} = \binom{n}{r}\cdot r! = \frac{n!}{(n-r)!} $$
+	\item Combination:
+	$$\nCr{n}{r} = \binom{n}{r} = \frac{n!}{r!(n-r)!} $$
+	$$\binom{n}{r} = \binom{n-1}{r-1}+\binom{n-1}{r} $$
+	\item Snippet for Pascal's Triangle (overflow past $\binom{62}{31}$)
+	\begin{lstlisting}[language=C++]
+	ll dp[maxn][maxn];
+	ll comb(ll n, ll r){
+		if (r == 0 || n == r) return 1;
+		if (dp[n][r] != -1) return dp[n][r];
+		dp[n][r] = comb(n-1, r-1) + comb(n-1, r);
+		return dp[n][r];
+	}\end{lstlisting}
+% 
+\end{itemize}
+\end{document}

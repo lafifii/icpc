@@ -1,0 +1,1 @@
+alias g='g++ -std=c++14 -Wshadow -fsanitize=undefined -D_GLIBCXX_DEBUG'

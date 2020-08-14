@@ -1,0 +1,5 @@
+Strings: 
+- Diccionario Portuñol (https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3803)
+- Revenge of th Fibonacci TLE (https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3755)
+- A lot of Games (https://codeforces.com/problemset/problem/455/B)
+- SubXOR, Chossing the Commander, Old Berland Language, x-Xor it (https://vjudge.net/contest/355232)
