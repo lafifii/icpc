@@ -1,24 +1,28 @@
-//Time complexity O(E*|F|)
-int send(int v, int curm){
+
+int cap[maxn][maxn];
+vector<int> vs[maxn];
+ 
+int sink;
+int dfs(int v, int f){
 	vis[v] = true;
-	if (v == SINK) return curm;
-	int cap;
-	for(int i = 1; i<maxn; i++){
-		if (i == v) continue;
-		cap = G[v][i]-F[v][i];
-		if (vis[i] == false and cap>0){
-			int sent = send(i, min(curm, cap));
-			if (sent>0){
-				F[v][i]+=sent;
-				F[i][v]-=sent;
-				return sent;
-			}
+	if (v == sink) return f;
+	for(int e: vs[v]) if (!vis[e] && cap[v][e] > 0){
+		int flow = dfs(e, min(f, cap[v][e]));
+		if (flow > 0){
+			cap[v][e] -= flow;
+			cap[e][v] += flow;
+			return flow;
 		}
 	}
 	return 0;
 }
-//Call in main
-while(int sent = send(SOURCE,INF)){
-	total+= sent;
-	memset(vis, 0, sizeof(vis));
+ 
+int maxflow(int s, int t){
+	int flow = 0, new_flow = 0;
+	sink = t;
+	while(new_flow = dfs(s, maxn)){
+		flow += new_flow;
+		memset(vis, 0, sizeof(vis));
+	}
+	return flow;
 }

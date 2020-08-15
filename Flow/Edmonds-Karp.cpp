@@ -1,55 +1,34 @@
-//define 'maxn' and 'inf' as type const int
-int n, m;
-int c[maxn];
-int pnode[maxn];
-int pedge[maxn];
-struct edge{
-	int to, cap, flow, rev;
-	edge(){};
-	edge(int to_, int cap_, int flow_, int rev_) :
-		to(to_), cap(cap_), flow(flow_), rev(rev_) {}
-};
-vector<edge> G[maxn];
-void addEdge(int u, int v, int cap){
-	int idu = G[u].size();
-	int idv = G[v].size();
-	G[u].emplace_back(edge(v,cap,0,idv));
-	G[v].emplace_back(edge(u,0,0,idu));
-}
-int BFS(int s, int t){
-	memset(pnode, -1, sizeof pnode);
-	pnode[s] = -2;
-	queue< pair<int,int> > Q;
-	Q.push({s, inf});
-	while(Q.size()){
-		int u = Q.front().first;
-		int flow = Q.front().second;
-		Q.pop();
-		for(int i=0; i<G[u].size(); i++){
-			edge e = G[u][i];
-			if(pnode[e.to] != -1) continue;
-			if(e.cap - e.flow > 0){
-				pnode[e.to] = u;
-				pedge[e.to] = i;
-				int new_flow = min(flow, e.cap - e.flow);
-				if(e.to == t) return new_flow;
-				else Q.push({e.to, new_flow});
-			}
+int p[maxn], cap[maxn][maxn];
+vector<int> vs[maxn];
+
+int bfs(int s, int t){
+	memset(p, -1, sizeof(p));
+	p[s] = -2;
+	queue<pair<int,int>> q;
+	q.emplace(make_pair(s, int(1e9)));
+	while(q.size()){
+		int v = q.front().first, f = q.front().second;
+		q.pop();
+		for(int e: vs[v]) if (p[e] == -1 && cap[v][e] > 0){
+			p[e] = v;
+			int nf = min(f, cap[v][e]);
+			if (e == t) return nf;
+			q.emplace(make_pair(e, nf));
 		}
 	}
 	return 0;
-} 
+}
+
+
 int maxflow(int s, int t){
-	int flow = 0;
-	int new_flow;
-	while(new_flow = BFS(s,t)){
+	int flow = 0, new_flow = 0;
+	while(new_flow = bfs(s,t)){
 		flow += new_flow;
 		int v = t;
-		while(v != s){
-			int u = pnode[v];
-			int e = pedge[v];
-			G[u][e].flow += new_flow;
-			G[v][G[u][e].rev].flow -= new_flow;
+		while(v != s) {
+			int u = p[v];
+			cap[u][v] -= new_flow;
+			cap[v][u] += new_flow;
 			v = u;
 		}
 	}
